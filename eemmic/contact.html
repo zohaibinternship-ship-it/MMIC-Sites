@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — EEMMIC</title>
+  <meta name="description" content="Get in touch with EEMMIC — AmanorX Holdings' energy evaluation, management, marketing and investment company." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <canvas id="ember-canvas" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="container contact">
+
+    <!-- Nav -->
+    <nav class="top-nav" aria-label="Site navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+
+    <!-- Logo -->
+    <div class="logo" aria-label="EEMMIC">EEM<span class="logo-accent">MIC</span></div>
+
+    <!-- Page heading -->
+    <h1 class="page-title">Get in <span class="accent">Touch</span></h1>
+    <p class="page-subtitle">We'd love to hear from you</p>
+
+    <!-- Contact form -->
+    <!-- ⚠️ Wire up action to a real backend / Formspree / EmailJS before launch -->
+    <form id="contact-form" class="contact-form" novalidate>
+      <div>
+        <label for="cf-name">Name</label>
+        <input type="text" id="cf-name" name="name" placeholder="Your name" required />
+      </div>
+      <div>
+        <label for="cf-email">Email</label>
+        <input type="email" id="cf-email" name="email" placeholder="your@email.com" required />
+      </div>
+      <div>
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" placeholder="How can we help?" required></textarea>
+      </div>
+      <button type="submit">Send Message</button>
+    </form>
+
+    <!-- Back -->
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <!-- Footer -->
+    <footer class="footer">
+      © 2026 EEMMIC — an AmanorX Holdings company. All rights reserved.
+      <span class="separator">·</span>
+      <a href="#">Privacy Policy</a>
+      <span class="separator">·</span>
+      <a href="#">Terms of Service</a>
+    </footer>
+
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

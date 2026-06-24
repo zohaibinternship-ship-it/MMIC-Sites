@@ -1,0 +1,460 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 24px;
+    position: relative;
+    overflow-x: hidden;
+    
+    /* Luxury Light-Mode Healthcare Gradient */
+    background: linear-gradient(-45deg, #f4f7ff, #eef9f6, #fbfbfe, #e9f0fe);
+    background-size: 400% 400%;
+    animation: lightGradientShift 18s ease infinite;
+}
+
+@keyframes lightGradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content, .container {
+    position: relative;
+    z-index: 10; /* Keeps all content cleanly above canvas */
+    max-width: 820px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+/* ===== TOP NAV ===== */
+.top-nav {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-bottom: 48px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.top-nav a {
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    position: relative;
+}
+
+.top-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #2563eb;
+    transition: width 0.3s ease;
+}
+
+.top-nav a:hover::after,
+.top-nav a.active::after {
+    width: 100%;
+}
+
+.top-nav a:hover,
+.top-nav a.active {
+    color: #1a1a2e;
+}
+
+.top-nav a.active {
+    color: #2563eb;
+}
+
+/* ===== LOGO ===== */
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    color: #1a1a2e;
+    margin-bottom: 36px;
+    opacity: 0.9;
+}
+
+/* ===== HERO WITH MOUSE ANIMATION ===== */
+.hero-wrapper {
+    perspective: 1000px;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.hero-headline {
+    font-size: clamp(44px, 10vw, 76px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #111827;
+    transition: transform 0.08s ease-out;
+    will-change: transform;
+    display: inline-block;
+    cursor: default;
+}
+
+.hero-headline .accent, .page-title .accent {
+    color: #2563eb;
+    position: relative;
+}
+
+.hero-headline .accent::after, .page-title .accent::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 4px;
+    z-index: -1;
+}
+
+.animate-text {
+    animation: fadeUp 0.9s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.subline {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 400;
+    color: #374151;
+    margin-bottom: 16px;
+    animation: fadeUp 0.9s ease 0.15s forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.description {
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: #4b5563;
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto 40px;
+    animation: fadeUp 0.9s ease 0.3s forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* ===== COMING SOON BADGE ===== */
+.coming-soon {
+    display: inline-block;
+    padding: 12px 44px;
+    border: 2px solid #2563eb;
+    border-radius: 50px;
+    color: #2563eb;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    background: rgba(37, 99, 235, 0.05);
+    transition: all 0.4s ease;
+    animation: fadeUp 0.9s ease 0.45s forwards;
+    opacity: 0;
+    transform: translateY(30px);
+    backdrop-filter: blur(4px);
+}
+
+.coming-soon:hover {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15);
+    transform: scale(1.03);
+}
+
+/* ===== EMAIL SECTION ===== */
+.email-heading {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+.email-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.email-form input, .contact-form input, .contact-form textarea {
+    flex: 1;
+    min-width: 200px;
+    padding: 16px 24px;
+    border: 2px solid rgba(37, 99, 235, 0.12);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    color: #111827;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.email-form input:focus, .contact-form input:focus, .contact-form textarea:focus {
+    border-color: #2563eb;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.06);
+}
+
+.email-form input::placeholder {
+    color: #9ca3af;
+}
+
+.email-form button, .contact-form button {
+    padding: 16px 40px;
+    border: none;
+    border-radius: 50px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.email-form button:hover, .contact-form button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+}
+
+.privacy-line {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 48px;
+}
+
+/* ===== SOCIAL ===== */
+/* ===== SOCIAL ICONS & HOVER ANIMATIONS ===== */
+.social {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    border-radius: 50%;
+    color: #4b5563;
+    font-size: 20px;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth spring-bounce effect */
+}
+
+/* Subtle continuous micro-floating effect */
+.social-icon:nth-child(1) { animation: microFloat 4s ease-in-out infinite; }
+.social-icon:nth-child(2) { animation: microFloat 4s ease-in-out infinite 0.5s; }
+.social-icon:nth-child(3) { animation: microFloat 4s ease-in-out infinite 1s; }
+
+@keyframes microFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* Hover effects */
+.social-icon:hover {
+    transform: translateY(-8px) scale(1.12) !important; /* Overrides micro-floating on hover */
+    color: #ffffff;
+    background: #ffffff;
+    border-color: transparent;
+}
+
+/* Specific brand color glow maps */
+.social-icon.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    box-shadow: 0 10px 20px rgba(220, 39, 67, 0.3);
+}
+
+.social-icon.linkedin:hover {
+    background: #0077b5;
+    box-shadow: 0 10px 20px rgba(0, 119, 181, 0.3);
+}
+
+.social-icon.facebook:hover {
+    background: #1877f2;
+    box-shadow: 0 10px 20px rgba(24, 119, 242, 0.3);
+}
+
+.social a {
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+.social a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #2563eb;
+    transition: width 0.3s ease;
+}
+
+.social a:hover::after {
+    width: 100%;
+}
+
+.social a:hover {
+    color: #2563eb;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.8;
+    border-top: 1px solid rgba(37, 99, 235, 0.08);
+    padding-top: 24px;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer a {
+    color: #4b5563;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #2563eb;
+}
+
+.footer .separator {
+    margin: 0 8px;
+    color: #cbd5e1;
+}
+
+/* ===== ABOUT & CONTACT PAGES ===== */
+.page-title {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.page-subtitle {
+    font-size: clamp(16px, 2vw, 20px);
+    color: #4b5563;
+    margin-bottom: 24px;
+}
+
+.page-content {
+    color: #374151;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    text-align: left;
+    font-size: 16px;
+}
+
+.page-content p {
+    margin-bottom: 16px;
+}
+
+/* ===== CONTACT FORM ===== */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto 40px;
+    text-align: left;
+}
+
+.contact-form input, .contact-form textarea {
+    border-radius: 14px;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-form button {
+    border-radius: 14px;
+}
+
+.back-link {
+    display: inline-block;
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.back-link:hover {
+    color: #1d4ed8;
+    transform: translateX(-4px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+    body { padding: 20px 16px; }
+    .top-nav { gap: 24px; font-size: 16px; margin-bottom: 32px; }
+    .logo { font-size: 22px; letter-spacing: 4px; margin-bottom: 28px; }
+    .email-form { flex-direction: column; max-width: 100%; }
+    .email-form input, .email-form button { width: 100%; }
+    .coming-soon { font-size: 13px; padding: 8px 24px; letter-spacing: 4px; }
+}
