@@ -1,0 +1,449 @@
+/* ═════════════════════════════════════════════════════════════════════
+   AGEMMIC — Vibrant High-Visibility Design Layout
+   Theme Background: Fresh Sage-Cream Alabaster Glow
+   ═════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-fresh-glow:  #F2F6F0; /* Brighter, high-contrast crisp organic sage background */
+  --surface-card:   #FFFFFF;
+  --leaf-green:     #4D7C0F; /* Vibrant core agricultural green */
+  --leaf-hover:     #3B5E0B;
+  --harvest-gold:   #B5801B; /* Darker golden bronze for maximum visibility text output */
+  --text-primary:   #192017; /* Very rich dark forest-charcoal */
+  --text-muted:     #4A5446; /* High-contrast structural grey-moss */
+  --border-organic: rgba(77, 124, 15, 0.2);
+  --shadow-premium: rgba(25, 32, 23, 0.06);
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-fresh-glow);
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#organic-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at 50% 30%, 
+    transparent 0%, 
+    rgba(235, 242, 232, 0.4) 70%, 
+    rgba(215, 227, 210, 0.7) 100%
+  );
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.25rem, 5vw, 3rem);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Menu Links ─────────────────────────────────── */
+.top-nav {
+  display: flex;
+  justify-content: center;
+  gap: 3.5rem;
+  margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  opacity: 0;
+  animation: fadeDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.top-nav a {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.3s, transform 0.3s;
+  padding-bottom: 6px;
+  position: relative;
+}
+
+.top-nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2.5px;
+  background: var(--leaf-green);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.top-nav a:hover, .top-nav a.active { color: var(--text-primary); transform: translateY(-1px); }
+.top-nav a:hover::after, .top-nav a.active::after { width: 100%; left: 0; }
+
+/* ── Brand Logo Wordmark ────────────────────────── */
+.logo {
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+/* ── Redesigned ENLARGED Coming Soon Badge ─────── */
+.coming-soon-badge {
+  display: inline-block;
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem); /* Increased size significantly */
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: var(--harvest-gold); /* Solid, high visibility background */
+  padding: 0.65rem 2.5rem;
+  border-radius: 40px;
+  margin-bottom: clamp(2rem, 6vw, 3rem);
+  box-shadow: 0 10px 25px rgba(181, 128, 27, 0.25);
+  opacity: 0;
+  animation: popGrow 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+}
+
+/* ── Hero Typography ────────────────────────────── */
+.headline {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 8vw, 4.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.headline .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.headline .word.visible { opacity: 1; transform: translateY(0); }
+.headline .accent { color: var(--leaf-green); font-style: italic; font-weight: 700; }
+
+.subheadline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2.8vw, 1.6rem);
+  font-style: italic;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+.description {
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  color: var(--text-muted);
+  max-width: 580px;
+  line-height: 1.8;
+  margin: 0 auto 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
+}
+
+.rule {
+  width: 7rem;
+  height: 3px;
+  background: var(--leaf-green);
+  border-radius: 2px;
+  margin: 0 auto 3rem;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.6s forwards;
+}
+
+/* ── Form Inputs Card Layout ────────────────────── */
+.email-capture {
+  width: 100%;
+  max-width: 460px;
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.7s forwards;
+}
+
+.email-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  color: var(--leaf-green);
+  margin-bottom: 1.2rem;
+}
+
+.email-row {
+  display: flex;
+  border: 2px solid var(--border-organic);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-card);
+  box-shadow: 0 8px 30px var(--shadow-premium);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.email-row:focus-within {
+  border-color: var(--leaf-green);
+  box-shadow: 0 12px 35px rgba(77, 124, 15, 0.12);
+}
+
+.email-row input[type="email"] {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1.15rem 1.5rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.email-row input::placeholder { color: #8C9987; }
+
+.email-row button {
+  background: var(--leaf-green);
+  color: #FFFFFF;
+  border: none;
+  padding: 0 2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.email-row button:hover { background: var(--leaf-hover); }
+.email-row button:active { transform: scale(0.97); }
+
+.privacy { margin-top: 1rem; font-size: 0.72rem; color: var(--text-muted); font-weight: 500; }
+
+.success-msg {
+  display: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: var(--leaf-green);
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(77, 124, 15, 0.2);
+}
+
+/* ── Client Social Icons Links ──────────────────── */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.9s forwards;
+}
+
+.social-links a {
+  color: var(--text-muted);
+  transition: color 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.social-links a:hover { color: var(--leaf-green); transform: translateY(-5px) scale(1.15); }
+.social-links a svg { width: 22px; height: 22px; fill: currentColor; }
+.social-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-organic); }
+
+/* ── Footer ─────────────────────────────────────── */
+.footer { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; opacity: 0; animation: fadeIn 1s ease 2s forwards; text-align: center; }
+.footer a { color: var(--text-muted); font-weight: 600; }
+.footer a:hover { color: var(--leaf-green); }
+.separator { margin: 0 0.8rem; color: var(--border-organic); }
+
+/* ── Inner Pages Component Overhauls ────────────── */
+.page-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 1rem; opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards; text-align: center;}
+.page-subtitle { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2vw, 1.3rem); font-style: italic; color: var(--text-muted); margin-bottom: 3.5rem; opacity: 0; animation: fadeUp 0.8s ease 0.45s forwards; text-align: center;}
+
+.page-content { max-width: 620px; margin: 0 auto 3rem; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; background: var(--surface-card); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 35px var(--shadow-premium); border: 1px solid rgba(77, 124, 15, 0.06); }
+.page-content p { font-size: 0.98rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; text-align: left; }
+.page-content p:last-child { margin-bottom: 0; }
+
+.back-link { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3rem; transition: color 0.2s, gap 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeIn 1s ease 0.8s forwards; }
+.back-link:hover { color: var(--leaf-green); gap: 0.8rem; }
+
+/* ── High Contrast Contact Form ─────────────────── */
+.contact-form { width: 100%; max-width: 500px; margin: 0 auto 3rem; background: var(--surface-card); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 35px var(--shadow-premium); border: 1px solid rgba(77, 124, 15, 0.06); opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; text-align: left; }
+.contact-form label { display: block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--leaf-green); margin-bottom: 0.6rem; }
+.contact-form input, .contact-form textarea { width: 100%; background: var(--bg-fresh-glow); border: 2px solid var(--border-organic); border-radius: 6px; padding: 1.1rem 1.4rem; margin-bottom: 1.5rem; font-family: inherit; font-size: 0.95rem; color: var(--text-primary); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.contact-form input:focus, .contact-form textarea:focus { border-color: var(--leaf-green); box-shadow: 0 0 0 1px var(--leaf-green); background: #FFFFFF; }
+.contact-form textarea { min-height: 140px; resize: vertical; }
+.contact-form button { width: 100%; background: var(--leaf-green); color: #FFFFFF; border: none; border-radius: 6px; padding: 1.2rem; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; box-shadow: 0 5px 15px rgba(77, 124, 15, 0.2); transition: background 0.2s, transform 0.1s; }
+.contact-form button:hover { background: var(--leaf-hover); }
+
+/* ── Dynamic Keyframes ──────────────────────────── */
+@keyframes popGrow { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 480px) {
+  .email-row { flex-direction: column; }
+  .email-row input[type="email"] { border-bottom: 2px solid var(--border-organic); }
+  .email-row button { padding: 1.2rem; }
+  .top-nav { gap: 1.75rem; }
+}
+
+/* ── PREMIUM INTERACTIVE GRID SYSTEM OVERHAUL ── */
+.about-grid-interface {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin: 0 auto 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+/* Base Editorial Glass-Surface Settings */
+.about-card {
+  background: var(--surface-card);
+  border-radius: 12px;
+  border: 1px solid rgba(77, 124, 15, 0.08);
+  box-shadow: 0 10px 35px var(--shadow-premium);
+  padding: 2.5rem;
+  text-align: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+}
+
+/* Smooth kinetic lifting feedback on user interaction */
+.about-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(77, 124, 15, 0.25);
+  box-shadow: 0 20px 45px rgba(77, 124, 15, 0.06);
+}
+
+/* Primary Header Identity Presentation Unit */
+.primary-hero-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #FFFFFF 0%, #FAFCF9 100%);
+  border-left: 5px solid var(--leaf-green);
+}
+
+.primary-hero-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.primary-hero-card .lead-text {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  line-height: 1.75;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.card-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--leaf-green);
+  background: rgba(77, 124, 15, 0.08);
+  padding: 0.4rem 1.2rem;
+  border-radius: 30px;
+  margin-bottom: 1.2rem;
+}
+
+/* Grid Matrix Layout Calculations */
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+}
+
+/* Let the third card sweep cleanly across the grid base for asymmetrical balance */
+.focus-grid .full-width-block {
+  grid-column: span 2;
+  background: linear-gradient(to right, #FFFFFF 0%, #F9FBF8 100%);
+}
+
+.card-icon-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.card-icon-header svg {
+  width: 26px;
+  height: 26px;
+  color: var(--harvest-gold);
+  flex-shrink: 0;
+}
+
+.card-icon-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.focus-grid p {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+/* Subtle graphic vignette on the primary item corner */
+.card-footer-decoration {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle at bottom right, rgba(181, 128, 27, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Smooth Responsive Collapsing Configuration */
+@media (max-width: 768px) {
+  .focus-grid {
+    grid-template-columns: 1fr;
+  }
+  .focus-grid .full-width-block {
+    grid-column: span 1;
+  }
+  .about-card {
+    padding: 1.8rem;
+  }
+}
