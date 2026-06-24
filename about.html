@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — FEMMIC</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <style>
+        /* Specific Inner Page Component Styling */
+        .page-card {
+            background-color: rgba(6, 14, 23, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border-radius: 6px;
+            padding: 45px;
+            text-align: left;
+            max-width: 680px;
+            width: 100%;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .page-card p {
+            font-size: 15.5px;
+            line-height: 1.85;
+            color: #b0bec8;
+            margin-bottom: 22px;
+            font-weight: 300;
+        }
+        
+        .page-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .back-home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #dfcaa7;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.2s ease, transform 0.2s ease;
+            margin-bottom: 40px;
+        }
+        
+        .back-home-link:hover {
+            color: #ffffff;
+            transform: translateX(-3px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        
+        <header class="site-header">
+            <div class="logo-area">
+                <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+                <span class="logo-text">FEMMIC</span>
+            </div>
+            
+            <nav class="main-nav">
+                <a href="index.html" class="nav-item">HOME</a>
+                <a href="about.html" class="nav-item active">ABOUT</a>
+                <a href="contact.html" class="nav-item">CONTACT</a>
+            </nav>
+            
+            <div class="social-header-group">
+                <a href="#" class="social-circle"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+            </div>
+        </header>
+
+        <main class="hero-container">
+            
+            <a href="index.html" class="back-home-link">
+                <i class="fa-solid fa-arrow-left-long"></i> Back to Home
+            </a>
+
+            <h1 class="main-headline">
+                About <span class="gold-accent">FEMMIC.</span>
+            </h1>
+            
+            <p class="purpose-subheadline">Quietly powering Pakistan’s financial future.</p>
+            
+            <div class="page-card">
+                <p>
+                    FEMMIC is AmanorX Holdings’ dedicated financial arm. We evaluate, manage, market, and invest in financial opportunities across Pakistan with absolute precision, market intelligence, and structural integrity.
+                </p>
+                <p>
+                    Our operational ethos is inspired by premium global private banking models — calm, strictly strategic, long-term, and fundamentally aligned toward sustainable corporate asset creation.
+                </p>
+                <p>
+                    By merging localized deployment proficiency with robust capital access structures, we build resilient paths for modern institutional growth across evolving domestic financial ecosystems.
+                </p>
+            </div>
+            
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-left">
+                © 2026 FEMMIC — an AmanorX Holdings company. All rights reserved.
+            </div>
+            <div class="footer-right">
+                <a href="#">Privacy Policy</a>
+                <span class="footer-pipe">|</span>
+                <a href="#">Terms of Service</a>
+            </div>
+            
+            <a href="#" class="scroll-top-btn">
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+/* ===== ARCHITECTURAL GLOBAL CONFIGURATION ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== GLOBAL STYLES & LUXURY DYNAMIC BACKGROUND ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    
+    /* Applies your new clean mockup graphic across all pages */
+    background-image: url('../images/luxury-bg.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the globe, coins, and charts still while content scrolls smoothly */
+    background-color: #050b11; /* Premium deep blue color fallback while loading */
+    
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Base structural wrapper layer that accommodates our script backdrop */
+.page-wrapper {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 40px 60px; /* Restores standard spacing layout containment */
+    
+    /* FIXES SCROLLING: Forces browser layout engine to explicitly allow overflow content */
+    overflow-y: auto !important; 
+    overflow-x: hidden;
+}
+
+/* ===== ROW A: SITE NAVBAR NAVIGATION HEADER ===== */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Fixes the Top Left Logo icon to be bright and glowing white */
+.logo-area .logo-icon {
+    font-size: 26px;
+    color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+/* Fixes the Top Left Brand Text to be perfectly crisp and readable */
+.logo-area .logo-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.main-nav {
+    display: flex;
+    gap: 45px;
+}
+
+.nav-item {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #a4afb8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding-bottom: 8px;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: #dfcaa7;
+}
+
+.nav-item.active {
+    border-bottom: 2px solid #dfcaa7;
+}
+
+/* ===== ROW B: MAIN EDITORIAL TYPOGRAPHY COMPOSITION ===== */
+.hero-container {
+    max-width: 820px;
+    width: 100%;
+    margin: 50px auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.finance-tag-row {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    color: #bcaf9c;
+    margin-bottom: 15px;
+}
+
+.finance-tag-row .bullet {
+    margin: 0 12px;
+    color: #8c7f6d;
+}
+
+.diamond-divider {
+    color: #dfcaa7;
+    font-size: 12px;
+    margin-bottom: 35px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Perfect alignment horizontal framing lines next to the diamond */
+.diamond-divider::before, .diamond-divider::after {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 1px;
+    background: linear-gradient(to right, rgba(223,202,167,0), rgba(223,202,167,0.35));
+}
+.diamond-divider::before { right: 54%; }
+.diamond-divider::after { left: 54%; background: linear-gradient(to left, rgba(223,202,167,0), rgba(223,202,167,0.35)); }
+
+.main-headline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 68px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+}
+
+.gold-accent {
+    color: #dfcaa7;
+}
+
+.purpose-subheadline {
+    font-size: 21px;
+    font-weight: 300;
+    color: #e4edf3;
+    letter-spacing: 0.5px;
+    margin-bottom: 32px;
+}
+
+.corporate-description {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #a3b0b9;
+    max-width: 650px;
+    margin-bottom: 50px;
+}
+
+.coming-soon-banner {
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 16px;
+    color: #ffffff;
+    margin-bottom: 55px;
+    padding-left: 16px;
+}
+
+.form-instructions {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: #ffffff;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== SUBSCRIPTION INPUT FORM COMPONENT ===== */
+.subscription-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: rgba(6, 14, 23, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.subscription-form input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 18px 26px;
+    color: #ffffff;
+    font-size: 15px;
+    outline: none;
+}
+
+.subscription-form input::placeholder {
+    color: #5d6d79;
+}
+
+.subscription-form button {
+    background-color: #dfcaa7;
+    color: #141c22;
+    border: none;
+    padding: 0 32px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.subscription-form button:hover {
+    background-color: #eccfb4;
+}
+
+.privacy-notice {
+    font-size: 12px;
+    color: #6a7985;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== ROW C: HIGH-CONTRAST SYSTEM FOOTER STRIP ===== */
+.site-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 30px;
+    margin-top: auto; /* Pushes the footer cleanly to the baseline */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+    color: #e2e8f0 !important; /* Fixed: Enhanced metallic color from dark overlay */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.site-footer .footer-left {
+    color: #e2e8f0 !important;
+    opacity: 0.95 !important;
+    font-weight: 400;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-right: 50px;
+}
+
+.footer-right a {
+    color: #e2e8f0 !important;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.95 !important;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.footer-right a:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.footer-pipe {
+    color: #bcaf9c !important; /* Elegant tint value for layout breaks */
+    opacity: 0.5 !important;
+}
+
+.scroll-top-btn {
+    position: absolute;
+    right: 0;
+    bottom: -5px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(223, 202, 167, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dfcaa7;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.scroll-top-btn:hover {
+    background-color: rgba(223, 202, 167, 0.08);
+    border-color: #dfcaa7;
+}
+
+/* ===== RESPONSIVE MEDIA ADAPTATION OVERRIDES ===== */
+@media (max-width: 992px) {
+    .page-wrapper { padding: 30px 40px; }
+}
+
+@media (max-width: 768px) {
+    .page-wrapper { padding: 25px 20px; }
+    .site-header { flex-direction: column; gap: 20px; padding-bottom: 25px; }
+    .main-nav { gap: 25px; }
+    .main-headline { font-size: 46px; }
+    .subscription-form { flex-direction: column; border: none; background: transparent; }
+    .subscription-form input { background-color: rgba(6, 14, 23, 0.85); border: 1px solid rgba(255,255,255,0.12); margin-bottom: 12px; border-radius: 4px; width: 100%; }
+    .subscription-form button { padding: 18px; justify-content: center; border-radius: 4px; width: 100%; }
+    .site-footer { flex-direction: column; gap: 15px; text-align: center; padding-bottom: 70px; }
+    .footer-right { padding-right: 0; }
+    .scroll-top-btn { left: 50%; transform: translateX(-50%); bottom: 15px; }
+}

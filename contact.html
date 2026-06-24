@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — FEMMIC</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .page-card { background: rgba(6, 14, 23, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 45px; max-width: 600px; width: 100%; margin: 50px auto; }
+        .inner-form-group { margin-bottom: 24px; display: flex; flex-direction: column; gap: 8px; }
+        .inner-form-group label { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #bcaf9c; }
+        .inner-form-group input, .inner-form-group textarea { width: 100%; background: rgba(2, 5, 8, 0.6); border: 1px solid rgba(255, 255, 255, 0.12); padding: 16px; color: #fff; border-radius: 4px; outline: none; }
+        .inner-submit-btn { background: #dfcaa7; color: #141c22; border: none; padding: 16px 36px; cursor: pointer; font-weight: 600; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <main class="hero-container">
+            <h1>Get in <span class="gold-accent">Touch.</span></h1>
+            
+            <div class="page-card">
+                <form id="contact-form" action="PASTE_YOUR_WEB_APP_URL_HERE" method="POST">
+                    <div class="inner-form-group">
+                        <label>Name</label>
+                        <input type="text" name="Name" placeholder="Your name" required />
+                    </div>
+                    <div class="inner-form-group">
+                        <label>Email</label>
+                        <input type="email" name="Email" placeholder="Your email" required />
+                    </div>
+                    <div class="inner-form-group">
+                        <label>Message</label>
+                        <textarea name="Message" placeholder="Your message..." required></textarea>
+                    </div>
+                    <button type="submit" class="inner-submit-btn">SEND MESSAGE</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const form = document.getElementById('contact-form');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // This keeps you on the page
+            
+            const btn = form.querySelector('button');
+            btn.textContent = "SENDING...";
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(res => {
+                alert("Message sent successfully!");
+                form.reset();
+                btn.textContent = "SEND MESSAGE";
+            })
+            .catch(err => {
+                alert("Error: Ensure your script access is set to 'Anyone'.");
+                btn.textContent = "SEND MESSAGE";
+            });
+        });
+    </script>
+</body>
+</html>
