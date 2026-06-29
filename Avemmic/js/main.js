@@ -191,15 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
     Array.from(headline.querySelectorAll('.word')).forEach((el,i)=> setTimeout(()=>el.classList.add('visible'),500+i*90));
   }
 
-  // forms
+  // forms (email notify only — contact form handled on the contact page)
   const nb=document.getElementById('notify-btn'), ei=document.getElementById('email-input'),
         er=document.getElementById('email-row'), sm=document.getElementById('success-msg');
   if(nb&&ei){ const go=()=>{ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ei.value.trim())){ ei.style.outline='2px solid #3B8FD4'; ei.focus(); setTimeout(()=>ei.style.outline='',1200); return; }
     if(er) er.style.display='none'; if(sm) sm.style.display='block'; };
     nb.addEventListener('click',go); ei.addEventListener('keydown',e=>{ if(e.key==='Enter') go(); }); }
-
-  const cf=document.getElementById('contact-form');
-  if(cf){ cf.addEventListener('submit',e=>{ e.preventDefault(); const b=cf.querySelector('button[type="submit"]'); const tx=b.textContent;
-    b.textContent='✈ Message Sent'; b.style.background='#56A8E6'; b.disabled=true;
-    setTimeout(()=>{ b.textContent=tx; b.style.background=''; b.disabled=false; cf.reset(); },2500); }); }
 });
