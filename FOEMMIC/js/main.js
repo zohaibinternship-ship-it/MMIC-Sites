@@ -1,31 +1,27 @@
-/* FOEMMIC — Fresh Market Backdrop (LIGHT)
-   Healthy ingredients (avocado, tomato, lemon, leaf, broccoli, berry, mint, pea)
-   float, bob, and rotate. Strong cursor interaction: a bright follow-spotlight,
-   parallax tilt of the whole field, and active repel of nearby ingredients. */
+/* FOEMMIC — Fresh Market Backdrop (LIGHT) · v2
+   Realistic, layered produce with soft shading + depth-of-field blur, gentle
+   drift/bob/rotate, warm light bloom, and a cursor follow-spotlight + repel.
+   NOTE: the page content is NOT tilted by the cursor anymore. */
 document.addEventListener('DOMContentLoaded', () => {
 
   const canvas = document.getElementById('food-canvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
     let W, H, DPR, t = 0;
-    // eased cursor for smooth, strong follow
     let mouse = { x: 0, y: 0, ex: 0, ey: 0, has: false };
-    let items = [];
+    let items = [], motes = [];
     const rand = (a, b) => a + Math.random() * (b - a);
 
-    // fresh, healthy palette
     const C = {
-      avocado: '#7BA05B', avoFlesh: '#C7DC9E', pit: '#9C7A4A',
-      tomato: '#E0523B', tomLeaf: '#5E8C3A',
-      lemon: '#F2C84B', lemonHi: '#FBE89A',
-      leaf: '#6FAE54', leafDk: '#4E8C3A',
-      broc: '#5C8A3C', brocStem: '#9FBF6E',
-      berry: '#9B3B6A', berryHi: '#C96A93',
-      mint: '#7CC07C',
-      pea: '#8FBF52',
-      orange: '#F0913E'
+      avocado:'#7BA05B', avoDk:'#5E7E42', avoFlesh:'#CFE0A2', pit:'#9C7A4A', pitHi:'#B89360',
+      tomato:'#E0523B', tomDk:'#B83A28', tomLeaf:'#5E8C3A',
+      lemon:'#F2C84B', lemonDk:'#D9A82E', lemonHi:'#FBE89A',
+      leaf:'#6FAE54', leafDk:'#4E8C3A', leafHi:'#9ED27E',
+      broc:'#5C8A3C', brocDk:'#456C2C', brocStem:'#A7C77A',
+      berry:'#9B3B6A', berryDk:'#742A50', berryHi:'#C96A93',
+      mint:'#7CC07C', mintDk:'#589C58',
+      orange:'#F0913E', orangeDk:'#CF7124', orangeHi:'#FFB877'
     };
-
     const KINDS = ['avocado','tomato','lemon','leaf','broccoli','berry','mint','orange'];
 
     function init() {
@@ -37,38 +33,57 @@ document.addEventListener('DOMContentLoaded', () => {
       mouse.x = mouse.ex = W / 2; mouse.y = mouse.ey = H / 2;
 
       items = [];
-      const count = Math.max(16, Math.floor((W * H) / 48000));
+      const count = Math.max(14, Math.floor((W * H) / 52000));
       for (let i = 0; i < count; i++) items.push(make(true));
+      items.sort((a, b) => a.depth - b.depth);
+
+      motes = [];
+      const mc = Math.max(18, Math.floor((W * H) / 26000));
+      for (let i = 0; i < mc; i++) motes.push({
+        x: rand(0, W), y: rand(0, H), r: rand(0.6, 2.2),
+        a: rand(0.05, 0.22), sp: rand(0.15, 0.5),
+        ph: rand(0, Math.PI * 2), phS: rand(0.4, 1.1), amt: rand(8, 26)
+      });
     }
 
     function make(any) {
-      const depth = rand(0.4, 1);          // near items are bigger + parallax more
+      const depth = rand(0.35, 1);
       return {
         kind: KINDS[Math.floor(Math.random() * KINDS.length)],
-        x: rand(0, W), y: any ? rand(0, H) : rand(-40, -10),
-        baseX: 0, baseY: 0,
-        size: rand(20, 52) * depth,
+        x: rand(0, W), y: any ? rand(0, H) : rand(-50, -10),
+        size: rand(18, 50) * (0.55 + depth * 0.6),
         depth,
+        blur: (1 - depth) * 5,
         rot: rand(0, Math.PI * 2),
-        rotSpd: rand(-0.01, 0.01),
+        rotSpd: rand(-0.008, 0.008),
         bobPh: rand(0, Math.PI * 2),
-        bobSpd: rand(0.4, 1.1),
-        bobAmt: rand(6, 18),
-        driftX: rand(-0.12, 0.12),
-        driftY: rand(0.05, 0.18),
-        alpha: rand(0.65, 1),
+        bobSpd: rand(0.4, 1.0),
+        bobAmt: rand(5, 16),
+        driftX: rand(-0.10, 0.10) * depth,
+        driftY: rand(0.04, 0.16) * depth,
+        alpha: rand(0.55, 0.95) * (0.5 + depth * 0.5),
         vx: 0, vy: 0
       };
     }
 
-    // ── ingredient drawings (origin-centered, ~unit size before scale) ──
+    function sphere(x, y, r, light, dark) {
+      const g = ctx.createRadialGradient(x - r*0.32, y - r*0.34, r*0.1, x, y, r);
+      g.addColorStop(0, light); g.addColorStop(1, dark);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+    }
+    function specular(x, y, r) {
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.beginPath(); ctx.ellipse(x - r*0.34, y - r*0.36, r*0.18, r*0.12, -0.5, 0, Math.PI*2); ctx.fill();
+    }
+
     function draw(kind, s) {
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      const stroke = (col, w) => { ctx.strokeStyle = col; ctx.lineWidth = w; };
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
 
       if (kind === 'avocado') {
-        ctx.fillStyle = C.avocado;
+        const grd = ctx.createLinearGradient(0, -s*0.6, 0, s*0.7);
+        grd.addColorStop(0, C.avocado); grd.addColorStop(1, C.avoDk);
+        ctx.fillStyle = grd;
         ctx.beginPath();
         ctx.moveTo(0, -s*0.6);
         ctx.bezierCurveTo(s*0.5,-s*0.55, s*0.55,s*0.1, s*0.32,s*0.5);
@@ -76,65 +91,60 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.bezierCurveTo(-s*0.55,s*0.1, -s*0.5,-s*0.55, 0,-s*0.6);
         ctx.fill();
         ctx.fillStyle = C.avoFlesh;
-        ctx.beginPath(); ctx.ellipse(0, s*0.05, s*0.32, s*0.42, 0, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = C.pit;
-        ctx.beginPath(); ctx.arc(0, s*0.12, s*0.16, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(0, s*0.06, s*0.32, s*0.42, 0, 0, Math.PI*2); ctx.fill();
+        sphere(0, s*0.14, s*0.17, C.pitHi, C.pit);
 
       } else if (kind === 'tomato') {
-        ctx.fillStyle = C.tomato;
-        ctx.beginPath(); ctx.arc(0, s*0.06, s*0.5, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.22)';
-        ctx.beginPath(); ctx.ellipse(-s*0.16,-s*0.1,s*0.12,s*0.18,-0.5,0,Math.PI*2); ctx.fill();
+        sphere(0, s*0.06, s*0.5, C.tomato, C.tomDk);
+        specular(0, s*0.06, s*0.5);
         ctx.fillStyle = C.tomLeaf;
         for (let k=0;k<5;k++){ const a=(k/5)*Math.PI*2 - Math.PI/2;
           ctx.beginPath(); ctx.ellipse(Math.cos(a)*s*0.14, -s*0.4+Math.sin(a)*s*0.06, s*0.06, s*0.16, a, 0, Math.PI*2); ctx.fill(); }
 
       } else if (kind === 'lemon') {
-        ctx.fillStyle = C.lemon;
+        const g = ctx.createRadialGradient(-s*0.18,-s*0.16,s*0.06, 0,0,s*0.55);
+        g.addColorStop(0, C.lemonHi); g.addColorStop(1, C.lemonDk);
+        ctx.fillStyle = g;
         ctx.beginPath(); ctx.ellipse(0,0,s*0.52,s*0.38,0,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle = C.lemonHi;
-        ctx.beginPath(); ctx.ellipse(-s*0.16,-s*0.08,s*0.18,s*0.12,0,0,Math.PI*2); ctx.fill();
+        specular(-s*0.05,-s*0.04,s*0.5);
         ctx.fillStyle = C.leafDk;
         ctx.beginPath(); ctx.ellipse(s*0.5,-s*0.18,s*0.05,s*0.04,0,0,Math.PI*2); ctx.fill();
 
       } else if (kind === 'leaf') {
-        ctx.fillStyle = C.leaf;
+        const g = ctx.createLinearGradient(-s*0.5,0,s*0.5,0);
+        g.addColorStop(0, C.leafDk); g.addColorStop(0.5, C.leaf); g.addColorStop(1, C.leafHi);
+        ctx.fillStyle = g;
         ctx.beginPath();
         ctx.moveTo(0,-s*0.6);
         ctx.quadraticCurveTo(s*0.55,-s*0.1, 0,s*0.6);
         ctx.quadraticCurveTo(-s*0.55,-s*0.1, 0,-s*0.6);
         ctx.fill();
-        stroke('rgba(255,255,255,0.4)', s*0.04);
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = s*0.04;
         ctx.beginPath(); ctx.moveTo(0,-s*0.5); ctx.lineTo(0,s*0.5); ctx.stroke();
         for(let k=-2;k<=2;k++){ ctx.beginPath(); ctx.moveTo(0,k*s*0.16);
-          ctx.lineTo(s*0.2*(k>0?1:1), k*s*0.16+s*0.12); ctx.stroke(); }
+          ctx.lineTo(s*0.2, k*s*0.16+s*0.12); ctx.stroke(); }
 
       } else if (kind === 'broccoli') {
         ctx.fillStyle = C.brocStem;
         ctx.beginPath(); ctx.roundRect(-s*0.1, 0, s*0.2, s*0.5, s*0.08); ctx.fill();
-        ctx.fillStyle = C.broc;
         const florets=[[0,-s*0.3,s*0.26],[-s*0.24,-s*0.16,s*0.2],[s*0.24,-s*0.16,s*0.2],[-s*0.1,-s*0.42,s*0.16],[s*0.12,-s*0.42,s*0.16]];
-        florets.forEach(f=>{ ctx.beginPath(); ctx.arc(f[0],f[1],f[2],0,Math.PI*2); ctx.fill(); });
+        florets.forEach(f=> sphere(f[0],f[1],f[2], C.broc, C.brocDk));
 
       } else if (kind === 'berry') {
-        ctx.fillStyle = C.berry;
         const pts=[[0,-s*0.1],[-s*0.22,-s*0.18],[s*0.22,-s*0.18],[-s*0.14,s*0.12],[s*0.14,s*0.12],[0,s*0.28],[0,-s*0.34]];
-        pts.forEach(p=>{ ctx.beginPath(); ctx.arc(p[0],p[1],s*0.16,0,Math.PI*2); ctx.fill(); });
-        ctx.fillStyle = C.berryHi;
-        ctx.beginPath(); ctx.arc(-s*0.06,-s*0.06,s*0.05,0,Math.PI*2); ctx.fill();
+        pts.forEach(p=> sphere(p[0],p[1],s*0.16, C.berryHi, C.berryDk));
 
       } else if (kind === 'mint') {
-        ctx.fillStyle = C.mint;
         [[-s*0.18,0,-0.5],[s*0.18,0,0.5],[0,-s*0.22,0]].forEach(l=>{
           ctx.save(); ctx.translate(l[0],l[1]); ctx.rotate(l[2]);
+          const g = ctx.createLinearGradient(0,-s*0.3,0,s*0.32);
+          g.addColorStop(0, C.mint); g.addColorStop(1, C.mintDk); ctx.fillStyle = g;
           ctx.beginPath(); ctx.moveTo(0,-s*0.3); ctx.quadraticCurveTo(s*0.26,0,0,s*0.32);
           ctx.quadraticCurveTo(-s*0.26,0,0,-s*0.3); ctx.fill(); ctx.restore(); });
 
       } else { // orange
-        ctx.fillStyle = C.orange;
-        ctx.beginPath(); ctx.arc(0,0,s*0.5,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.25)';
-        ctx.beginPath(); ctx.ellipse(-s*0.16,-s*0.14,s*0.12,s*0.16,-0.5,0,Math.PI*2); ctx.fill();
+        sphere(0, 0, s*0.5, C.orangeHi, C.orangeDk);
+        specular(0,0,s*0.5);
         ctx.fillStyle = C.leafDk;
         ctx.beginPath(); ctx.ellipse(s*0.34,-s*0.42,s*0.16,s*0.08,-0.6,0,Math.PI*2); ctx.fill();
       }
@@ -142,63 +152,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function render() {
       t += 0.016;
-      // strong, eased cursor follow
       mouse.ex += (mouse.x - mouse.ex) * 0.10;
       mouse.ey += (mouse.y - mouse.ey) * 0.10;
-
       ctx.clearRect(0, 0, W, H);
 
-      // bright follow-spotlight tied to the cursor (content highlight)
+      motes.forEach(m => {
+        m.ph += m.phS * 0.02; m.y -= m.sp * 0.4;
+        const x = m.x + Math.sin(m.ph) * m.amt;
+        if (m.y < -10) { m.y = H + 10; m.x = rand(0, W); }
+        ctx.beginPath(); ctx.arc(x, m.y, m.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(224,178,90,${m.a.toFixed(3)})`; ctx.fill();
+      });
+
       if (mouse.has) {
-        const g = ctx.createRadialGradient(mouse.ex, mouse.ey, 0, mouse.ex, mouse.ey, 320);
-        g.addColorStop(0, 'rgba(255,214,120,0.30)');
-        g.addColorStop(0.45, 'rgba(126,192,124,0.12)');
+        const g = ctx.createRadialGradient(mouse.ex, mouse.ey, 0, mouse.ex, mouse.ey, 300);
+        g.addColorStop(0, 'rgba(255,214,120,0.22)');
+        g.addColorStop(0.45, 'rgba(126,192,124,0.09)');
         g.addColorStop(1, 'rgba(126,192,124,0)');
         ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(mouse.ex, mouse.ey, 320, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(mouse.ex, mouse.ey, 300, 0, Math.PI*2); ctx.fill();
       }
 
-      const px = (mouse.ex - W/2);
-      const py = (mouse.ey - H/2);
+      const px = (mouse.ex - W/2), py = (mouse.ey - H/2);
 
       items.forEach(it => {
         it.bobPh += it.bobSpd * 0.02;
         it.rot += it.rotSpd;
-        it.x += it.driftX;
-        it.y += it.driftY;
+        it.x += it.driftX; it.y += it.driftY;
 
-        // parallax tilt of the whole field toward cursor (depth-scaled)
-        const parX = -px * 0.05 * it.depth;
-        const parY = -py * 0.05 * it.depth;
+        const parX = -px * 0.04 * it.depth;
+        const parY = -py * 0.04 * it.depth;
 
-        // strong repel near cursor
         if (mouse.has) {
           const dx = it.x - mouse.ex, dy = it.y - mouse.ey, d = Math.hypot(dx, dy) || 1;
-          const R = 200;
-          if (d < R) { const f = (R - d) / R; it.vx += dx/d * f * 4.0; it.vy += dy/d * f * 4.0; }
+          const R = 190;
+          if (d < R) { const f = (R - d) / R; it.vx += dx/d * f * 3.4; it.vy += dy/d * f * 3.4; }
         }
         it.x += it.vx; it.y += it.vy; it.vx *= 0.90; it.vy *= 0.90;
 
-        if (it.y > H + 60 || it.x < -60 || it.x > W + 60) Object.assign(it, make(false));
+        if (it.y > H + 70 || it.x < -70 || it.x > W + 70) Object.assign(it, make(false));
 
         const drawX = it.x + parX;
         const drawY = it.y + parY + Math.sin(it.bobPh) * it.bobAmt;
 
-        // soft shadow for the light bg
         ctx.save();
-        ctx.translate(drawX, drawY);
-        ctx.globalAlpha = it.alpha * 0.18;
+        ctx.globalAlpha = it.alpha * 0.16;
         ctx.fillStyle = '#5E4632';
-        ctx.beginPath(); ctx.ellipse(0, it.size*0.55, it.size*0.4, it.size*0.14, 0, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(drawX, drawY + it.size*0.58, it.size*0.42, it.size*0.14, 0, 0, Math.PI*2); ctx.fill();
         ctx.restore();
 
         ctx.save();
+        if (it.blur > 0.3) ctx.filter = `blur(${it.blur.toFixed(1)}px)`;
         ctx.translate(drawX, drawY);
         ctx.rotate(it.rot);
         ctx.globalAlpha = it.alpha;
         draw(it.kind, it.size);
         ctx.restore();
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = 1; ctx.filter = 'none';
       });
 
       requestAnimationFrame(render);
@@ -212,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     init(); render();
   }
 
-  // headline word-by-word reveal
   const headline = document.getElementById('headline');
   if (headline) {
     (function proc(node){
@@ -226,22 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Array.from(headline.querySelectorAll('.word')).forEach((el,i)=> setTimeout(()=>el.classList.add('visible'),500+i*100));
   }
 
-  // content tilt-follow: hero block leans slightly toward the cursor (strong but smooth)
-  const tiltTarget = document.querySelector('.container');
-  if (tiltTarget) {
-    let tx=0, ty=0, cx=0, cy=0;
-    addEventListener('mousemove', e => {
-      tx = (e.clientX / innerWidth - 0.5);
-      ty = (e.clientY / innerHeight - 0.5);
-    });
-    (function tiltLoop(){
-      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
-      tiltTarget.style.transform = `perspective(1200px) rotateY(${cx*5}deg) rotateX(${-cy*5}deg)`;
-      requestAnimationFrame(tiltLoop);
-    })();
-  }
-
-  // email capture
   const nb=document.getElementById('notify-btn'), ei=document.getElementById('email-input'),
         er=document.getElementById('email-row'), sm=document.getElementById('success-msg');
   if(nb&&ei){ const go=()=>{ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ei.value.trim())){ ei.style.outline='2px solid #E0523B'; ei.focus(); setTimeout(()=>ei.style.outline='',1200); return; }
